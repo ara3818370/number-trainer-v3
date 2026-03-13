@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Number Trainer">
+  <meta name="theme-color" content="#f5f5f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#1c1c1e" media="(prefers-color-scheme: dark)">
+  <title>Number Trainer</title>
+  <!-- FOUC prevention: apply saved theme before CSS loads -->
+  <script>
+    (function(){
+      var t = localStorage.getItem('nlt_theme');
+      if (t) t = t.replace(/"/g, '');
+      if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+</head>
+<body>
+
+  <!-- Screen 1: Onboarding -->
+  <section id="screen-onboarding" class="screen">
+    <div class="onboarding-content">
+      <div class="emoji-hero" aria-hidden="true">🎧</div>
+      <h1 data-i18n="onboarding.title">Number Trainer</h1>
+      <p data-i18n="onboarding.subtitle">Learn to recognize numbers by ear</p>
+      <ul class="onboarding-steps">
+        <li><span class="step-icon">🔊</span> <span data-i18n="onboarding.step1">Listen to a sentence</span></li>
+        <li><span class="step-icon">👆</span> <span data-i18n="onboarding.step2">Choose the number you heard</span></li>
+        <li><span class="step-icon">✅</span> <span data-i18n="onboarding.step3">Get feedback and keep training</span></li>
+      </ul>
+      <button id="btn-onboarding-start" class="btn-primary" data-i18n="onboarding.start">Start</button>
+    </div>
+  </section>
+
+  <!-- Screen 2: Menu -->
+  <section id="screen-menu" class="screen">
+    <div class="menu-header">
+      <h1 data-i18n="menu.title">Choose a category</h1>
+      <div class="header-actions">
+        <button id="btn-theme" class="btn-icon" aria-label="Theme">🌓</button>
+        <button id="btn-help" class="btn-help" aria-label="Help">?</button>
+      </div>
+    </div>
+
+    <!-- Language Switchers -->
+    <div class="lang-switchers">
+      <div class="lang-switcher">
+        <span class="lang-label" data-i18n="lang.ui_label">Interface:</span>
+        <div class="lang-buttons">
+          <button class="lang-btn ui-lang-btn" data-lang="en">🇬🇧 EN</button>
+          <button class="lang-btn ui-lang-btn" data-lang="de">🇩🇪 DE</button>
+          <button class="lang-btn ui-lang-btn" data-lang="uk">🇺🇦 UK</button>
+        </div>
+      </div>
+      <div class="lang-switcher">
+        <span class="lang-label" data-i18n="lang.learn_label">Learning:</span>
+        <div class="lang-buttons">
+          <button class="lang-btn learn-lang-btn" data-lang="en">🇬🇧 English</button>
+          <button class="lang-btn learn-lang-btn" data-lang="de">🇩🇪 Deutsch</button>
+          <button class="lang-btn learn-lang-btn" data-lang="uk">🇺🇦 Українська</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="category-groups">
+      <!-- Rendered dynamically by app.js -->
+    </div>
+
+    <div class="speed-control">
+      <span class="speed-label" data-i18n="speed.label">Speed:</span>
+      <div class="speed-buttons">
+        <button class="speed-btn" data-speed="slow" data-i18n="speed.slow">Slow</button>
+        <button class="speed-btn" data-speed="normal" data-i18n="speed.normal">Normal</button>
+        <button class="speed-btn" data-speed="fast" data-i18n="speed.fast">Fast</button>
+      </div>
+    </div>
+
+    <div class="session-length-control">
+      <span class="session-length-label" data-i18n="session.length.label">Questions:</span>
+      <div class="session-length-buttons">
+        <button class="session-length-btn" data-length="10">10</button>
+        <button class="session-length-btn" data-length="20">20</button>
+        <button class="session-length-btn" data-length="50">50</button>
+        <button class="session-length-btn" data-length="0">∞</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screen 3: Training -->
+  <section id="screen-training" class="screen">
+    <div class="training-header">
+      <button id="btn-back" class="btn-back" aria-label="Back">←</button>
+      <span id="category-indicator" class="category-indicator"></span>
+      <span id="score-display">0/0 — 0%</span>
+    </div>
+
+    <button id="btn-replay" class="btn-replay" aria-label="Replay">
+      <span data-i18n="training.replay">🔊 Replay</span>
+    </button>
+
+    <div id="options-grid">
+      <!-- Option buttons rendered dynamically by ui.js -->
+    </div>
+
+    <div class="action-row">
+      <button id="btn-skip" class="btn-skip" data-i18n="training.skip">Skip</button>
+      <button id="btn-next" class="btn-next hidden" data-i18n="training.next">Next</button>
+      <button id="btn-end" class="btn-end" data-i18n="training.end">End</button>
+    </div>
+
+    <div class="speed-control">
+      <span class="speed-label" data-i18n="speed.label">Speed:</span>
+      <div class="speed-buttons">
+        <button class="speed-btn" data-speed="slow" data-i18n="speed.slow">Slow</button>
+        <button class="speed-btn" data-speed="normal" data-i18n="speed.normal">Normal</button>
+        <button class="speed-btn" data-speed="fast" data-i18n="speed.fast">Fast</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screen 4: Summary -->
+  <section id="screen-summary" class="screen">
+    <div class="summary-content">
+      <h1 data-i18n="summary.title">Result</h1>
+      <p class="summary-category" id="summary-category"></p>
+      <div class="summary-score" id="summary-percent">0%</div>
+      <p class="summary-detail">
+        <span data-i18n="summary.correct">Correct:</span>
+        <strong id="summary-correct">0</strong> /
+        <strong id="summary-total">0</strong>
+      </p>
+      <p class="summary-detail">
+        <span data-i18n="summary.mode">Mode:</span>
+        <span id="summary-mode">—</span>
+      </p>
+      <div class="summary-actions">
+        <button id="btn-new-session" class="btn-primary" data-i18n="summary.new">New session</button>
+        <button id="btn-home" class="btn-secondary" data-i18n="summary.home">Home</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screen 5: Error -->
+  <section id="screen-error" class="screen">
+    <div class="error-content">
+      <div class="emoji-hero" aria-hidden="true">⚠️</div>
+      <h1 data-i18n="error.title">Speech problem</h1>
+      <p id="error-message" data-i18n="error.message">
+        Your browser does not support speech synthesis. We recommend Safari on iPhone or Chrome on Android.
+      </p>
+      <button id="btn-error-retry" class="btn-primary" data-i18n="error.retry">Try again</button>
+    </div>
+  </section>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
